@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Order API
+  version: "1.0.0"
+  description: TODO
+paths:
+  /orders:
+    get:
+      summary: List all orders
+      operationId: listOrders
+      responses:
+        "200":
+          description: A list of orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        "200":
+          description: The created order.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /orders/{id}:
+    get:
+      summary: Get an order by id
+      operationId: getOrder
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: TODO
+      responses:
+        "200":
+          description: The order matching the specified id.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /orders/{id}/cancel:
+    post:
+      summary: Cancel an order
+      operationId: cancelOrder
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: TODO
+      responses:
+        "200":
+          description: The cancelled order.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDto"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  schemas:
+    OrderDto:
+      type: object
+      required:
+        - id
+        - customerId
+        - amount
+        - status
+      properties:
+        id:
+          type: string
+          description: TODO
+        customerId:
+          type: string
+          description: TODO
+        amount:
+          type: number
+          format: decimal
+          description: TODO
+        status:
+          type: string
+          description: TODO
+    CreateOrderRequest:
+      type: object
+      required:
+        - customerId
+        - amount
+      properties:
+        customerId:
+          type: string
+          description: Customer identifier. Must not be null or blank.
+        amount:
+          type: number
+          format: decimal
+          description: Order amount. Must be greater than zero.
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error message provided by the API.
+  responses:
+    BadRequest:
+      description: The request is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

@@ -1,4 +1,4 @@
-# M5 -- AI-assisted testing and documentation
+# M5 -- LLM-assisted testing and documentation
 
 Starter for the tax-calculator + order-API exercises.
 
